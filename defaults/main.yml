@@ -1,0 +1,5 @@
+---
+homebridge_manage_user: false
+homebridge_user: root
+homebridge_group: root
+homebridge_dir: /opt/homebridge

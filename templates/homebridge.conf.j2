@@ -1,0 +1,14 @@
+[program:homebridge]
+user={{ homebridge_user }}
+command=/usr/local/bin/hass -v --config {{ homebridge_dir }}
+autostart=true
+autorestart=true
+redirect_stderr=true
+stopwaitsecs=2
+stdout_logfile=/var/log/supervisor/homebridge.log
+logfile_maxbytes=20MB
+logfile_backups=10
+
+
+[include]
+files = /etc/supervisor/conf.d/*.conf

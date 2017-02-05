@@ -1,0 +1,44 @@
+---
+
+- name: Install Packages
+  package:
+    name: "{{ item }}"
+  with_items:
+    - supervisor
+
+    # build-essential checkinstall cython3 git htop libgcrypt11-dev libgnutls28-dev libudev-dev libyaml-dev python3-dev python3-pip python3-setuptools python3-sphinx vim   # Pre-requisites
+
+
+- name: Install Homebridge
+  npm:
+    name: homebridge
+
+- name: Start supervisor service
+  service:
+    name: supervisor
+    state: started
+
+- name: Add group
+  group:
+    name: "{{ homebridge_group }}"
+    system: yes
+  when: homebridge_manage_user
+
+- name: Add user
+  user:
+    name: "{{ homebridge_user }}"
+    group: "{{ homebridge_group }}"
+    shell: /sbin/nologin
+    system: yes
+  when: homebridge_manage_user
+
+- name: Create Homebridge directory
+  file:
+    path: "{{ homebridge_dir }}"
+    state: directory
+    owner: "{{ homebridge_user }}"
+    group: "{{ homebridge_group }}"
+    recurse: true
+
+- meta: flush_handlers
+
