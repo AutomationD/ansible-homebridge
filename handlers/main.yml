@@ -1,1 +1,15 @@
 ---
+
+- name: reload supervisor
+  command: supervisorctl reload
+
+- name: restart supervisor
+  service:
+    name: supervisor
+    state: restarted
+
+
+- name: restart homebridge
+  supervisorctl:
+    name: homebridge
+    state: restarted

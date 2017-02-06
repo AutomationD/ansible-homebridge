@@ -1,0 +1,27 @@
+---
+
+- name: Install Homebridge supervisor config
+  template:
+    src: homebridge.conf.j2
+    dest: /etc/supervisor/conf.d/homebridge.conf
+    mode: 0644
+  notify:
+    - reload supervisor
+
+- name: Place Config File
+  copy:
+    dest: "{{ homebridge_dir }}/config.json"
+    content: "{{ homebridge_config | to_nice_json(indent=2) }}"
+    mode: 0644
+    owner: "{{ homebridge_user }}"
+    group: "{{ homebridge_user }}"
+  when: homebridge_config is defined
+  notify:
+    - restart homebridge
+
+- meta: flush_handlers
+
+- name: Make sure Homebridge is running
+  supervisorctl:
+    name: homebridge
+    state: started

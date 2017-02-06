@@ -5,13 +5,21 @@
     name: "{{ item }}"
   with_items:
     - supervisor
-
-    # build-essential checkinstall cython3 git htop libgcrypt11-dev libgnutls28-dev libudev-dev libyaml-dev python3-dev python3-pip python3-setuptools python3-sphinx vim   # Pre-requisites
-
+    - libavahi-compat-libdnssd-dev
+    - avahi-daemon
+    - avahi-discover
+    - libnss-mdns
 
 - name: Install Homebridge
   npm:
     name: homebridge
+    global: true
+- name: Install Homebridge Plugins
+  npm:
+    name: "{{ item }}"
+    global: true
+  with_items: "{{ homebridge_plugins }}"
+  when: homebridge_plugins is defined
 
 - name: Start supervisor service
   service:

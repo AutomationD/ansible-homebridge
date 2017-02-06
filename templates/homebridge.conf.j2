@@ -1,6 +1,7 @@
 [program:homebridge]
 user={{ homebridge_user }}
-command=/usr/local/bin/hass -v --config {{ homebridge_dir }}
+command=/usr/bin/homebridge -U {{ homebridge_dir }} -D
+directory={{ homebridge_dir }}
 autostart=true
 autorestart=true
 redirect_stderr=true
